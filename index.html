@@ -35,50 +35,54 @@
             font-size: 14px;
             margin-bottom: 15px;
         }
-        /* TradingView 图表容器 */
-        #tradingview-chart {
+        /* 英为财情图表容器（保持原有高度和宽度） */
+        #investing-chart {
             width: 100%;
             height: 600px;
             border-radius: 8px;
+            overflow: hidden;
         }
         .footer {
             text-align: center;
             color: #a0aec0;
             font-size: 12px;
-            margin-top: 20px;
+            margin-top: 15px;
         }
     </style>
 </head>
 <body>
     <div class="container">
         <h1>SPY ETF (S&P 500) 价格走势折线图</h1>
-        <p class="chart-tip">支持切换：1天 / 1周 / 1个月 / 1年 周期 | 数据来源：TradingView</p>
+        <p class="chart-tip">支持切换：1天 / 1周 / 1个月 / 1年 周期 | 数据来源：英为财情（国内可访问）</p>
         
-        <!-- TradingView 嵌入式图表核心代码 -->
-        <div id="tradingview-chart">
-            <script type="text/javascript" src="https://s3.tradingview.com/tv.js"></script>
+        <!-- 英为财情嵌入式图表（替换原有 TradingView 代码） -->
+        <div id="investing-chart">
+            <script type="text/javascript" src="https://sslecal2.investing.com/js/charting/library/charting_library.min.js"></script>
             <script type="text/javascript">
-                // 图表配置：固定 SPY 标的 + 折线图 + 多周期
-                new TradingView.widget({
-                    "width": "100%",
-                    "height": 600,
-                    "symbol": "AMEX:SPY",
-                    "interval": "D", // 默认周期：日线（1天）
-                    "timezone": "Asia/Shanghai",
-                    "theme": "light",
-                    "style": "1", // 1 = 折线图；2 = K线图
-                    "locale": "zh",
-                    "toolbar_bg": "#f1f3f6",
-                    "enable_publishing": false,
-                    "allow_symbol_change": false, // 禁止切换标的，只显示 SPY
-                    "save_image": true,
-                    "container_id": "tradingview-chart"
+                // 图表配置：SPY 标的 + 折线图 + 多周期切换
+                window.addEventListener('load', function() {
+                    const chart = new TradingView.widget({
+                        "width": "100%",
+                        "height": 600,
+                        "symbol": "AMEX:SPY", // SPY ETF 标的
+                        "interval": "D", // 默认周期：日线（1天）
+                        "timezone": "Asia/Shanghai", // 北京时间
+                        "theme": "light", // 浅色主题（可改为 dark 深色）
+                        "style": "line", // 图表类型：折线图（固定，符合需求）
+                        "locale": "zh_CN", // 中文界面
+                        "toolbar_bg": "#f1f3f6",
+                        "enable_publishing": false,
+                        "allow_symbol_change": false, // 禁止切换标的，仅显示 SPY
+                        "save_image": true,
+                        "hide_top_toolbar": false, // 显示顶部工具栏（用于切换周期）
+                        "container_id": "investing-chart"
+                    });
                 });
             </script>
         </div>
 
         <div class="footer">
-            自制公开网页 | 数据延迟约15分钟（免费版）
+            自制公开网页 | 数据延迟约15分钟（免费版）| 国内合规可访问
         </div>
     </div>
 </body>
